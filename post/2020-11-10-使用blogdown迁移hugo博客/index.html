@@ -128,12 +128,6 @@ git push -u origin main
 <p>当然，不放心，还要修改就在 YMAL 里设置 <code>draft: true</code></p>
 <h2 id="评论系统">评论系统</h2>
 <p><a href="https://valine.js.org/">valine</a> 是国产的评论系统，在 <a href="https://leancloud.cn/">leancloud</a> 注册登陆获取appid，然后在 toml 文件设置好 appid 即可。</p>
-<p>~~还尝试了 <a href="https://utteranc.es/">https://utteranc.es/</a>，安装时选择将 <a href="https://github.com/apps/utterances">utterances</a> 安装至博客所在 repo 即可。</p>
-<ol>
-<li>Make sure the repo is public, otherwise your readers will not be able to view the issues/comments.</li>
-<li>Make sure the utterances app is installed on the repo, otherwise users will not be able to post comments.</li>
-<li>If your repo is a fork, navigate to it&rsquo;s settings tab and confirm the issues feature is turned on.</li>
-</ol>
 <p>还是需要重新将 hugo build 一下：</p>
 <p>**删掉原来的 pulic 的post 内容，找不回了，Rstudio 内重新 <code>hugo_build()</code>~~</p>
 </div>
