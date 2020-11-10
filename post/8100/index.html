@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="祝介东" />
+	
+	
+	
+	<title>浅谈 LI-8100 通量计算模型及实现 ｜ 我的天地</title>
+	
+    
+    
+    <meta name="description" content="本文是之前写的内容，从原网站导入，链接不贴也罢，因为墙的原因，基本放弃了 因为微信输入公式等诸多不便，因本文略有一点参考价值，所以将其转到我个人的博客上，微信的链接为： 浅谈 LI-8100 通量计算模型及实现 土壤呼吸是" />
+    
+
+    
+    
+    <meta name="keywords" content="生活, 学习, 工作" />
+    
+
+	
+    
+    <link rel="shortcut icon" href="https://zhujiedong.github.io/images/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="https://zhujiedong.github.iocss/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://zhujiedong.github.io/css/zozo.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://zhujiedong.github.io/css/highlight.css" />
+
+    
+    
+</head>
+
+<body>
+    <div class="main animate__animated animate__fadeInDown">
+        <div class="nav_container animated fadeInDown">
+    <div class="site_nav" id="site_nav">
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/posts/">Archive</a>
+            </li>
+            
+            <li>
+                <a href="/tags/">Tags</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于我</a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="menu_icon">
+        <a id="menu_icon"><i class="ri-menu-line"></i></a>
+    </div>
+</div>
+        <div class="header animated fadeInDown">
+    <div class="site_title_container">
+        <div class="site_title">
+            <h1>
+                <a href="https://zhujiedong.github.io">
+                    <span>我的天地</span>
+                </a>
+            </h1>
+        </div>
+        <div class="description">
+            <p class="sub_title">曾经渴望的自由</p>
+            <div class="my_socials">
+                
+                
+                <a href="https://gitee.com/zhu_jie_dong" title="gitee" target="_blank"><i class="ri-gitee-fill"></i></a>
+                
+                
+                
+                <a href="https://github.com/zhujiedong" title="github" target="_blank"><i class="ri-github-fill"></i></a>
+                
+                
+                <a href="https://zhujiedong.github.io/index.xml" type="application/rss+xml" title="rss" target="_blank"><i
+                        class="ri-rss-fill"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="content">
+            <div class="post_page">
+                <div class="post animate__animated animate__fadeInDown">
+                    <div class="post_title post_detail_title">
+                        <h2><a href='/post/8100/'>浅谈 LI-8100 通量计算模型及实现</a></h2>
+                        <span class="date">2020.02.20</span>
+                    </div>
+                    <div class="post_content markdown"><p><strong>本文是之前写的内容，从原网站导入，链接不贴也罢，因为墙的原因，基本放弃了</strong></p>
+<p>因为微信输入公式等诸多不便，因本文略有一点参考价值，所以将其转到我个人的博客上，微信的链接为：</p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU4ODI3NjkzMg==&amp;mid=2247484096&amp;idx=1&amp;sn=6103050baa5e49641b146c2ad6a0984a&amp;chksm=fdde776bcaa9fe7d3edcae4ec119842aa6cfb640a29b09ddd8fbcaddb113357fcd44d33f0796&amp;token=1834322599&amp;lang=zh_CN#rd">浅谈 LI-8100 通量计算模型及实现</a></p>
+<p>土壤呼吸是指土壤孔隙和裂隙中的 $CO_2$ 扩散到大气的过程，测量的方法和仪器有很多, LI-8100 测量的是土壤中的 $CO_2$ 扩散到<strong>气室外</strong>的大气环境条件中的速率。要完成准确的测量需要满足四个条件：</p>
+<ul>
+<li>气体浓度梯度的存在</li>
+<li>压力平衡</li>
+<li>温度的一致性</li>
+<li>湿度的一致性</li>
+</ul>
+<p>由于气室内 $CO_2$ 浓度的累积，导致气室内外气体的浓度差不同，这会导致测量计算的速率与外界真正的呼吸速率不一致的问题，这个问题通过计算初始的 $CO_2$ 变化率来解决。</p>
+<p>另一个问题是气室的存在会影响土壤中的 $CO_2$ 梯度，导致 $CO_2$ 通量计算的误差[@healy1996], 我们通常建议使用 90-120 s 的测量时间，使该效应降低到最小。</p>
+<h1 id="li-8100-指数拟合参数的计算">LI-8100 指数拟合参数的计算</h1>
+<p>我们先看一副图：</p>
+<img src="https://s2.ax1x.com/2020/02/08/1W5Lo6.png" alt="diagram" border="0">
+<p>其中，fc，fw 指的 $CO_2$ 和 $H_2O$ 的通量，Cc 和 Wc 分别指的是气室内 $CO_2$ 和 $H_2O$ 的浓度，Ca 是指气室外  $CO_2$ 的浓度，Cs 是指土壤内  $CO_2$ 的浓度, k 代表的是气室可能存在的漏气。 体积 V
+包含了气室、管路及泵在内的所有的体积。</p>
+<p>具体推导过程我们因为篇幅的原因不在复述，参考 LI-8100 的说明书 [@li81]，主要就是下面的公式来概括其原理：</p>
+<p>$$\rho_c = \rho_c^a + \rho_c^c+\rho_c^w$$</p>
+<p>$$f_c = \frac{v \rho_c}{1-w_c} \frac{\partial C_c^\prime}{\partial t}$$</p>
+<p>$\rho_c$ 为 $CO_2$ 的数量密度，那我们需要大气压和温度来计算，因为我们计算的是 $CO_2$ 初始阶段的密度，所以我们需要这些数据的初始值，同时还需要初始水分含量 $W_c$ 以及初始的 $CO_2$ 变化率 $\frac{\partial C_c^\prime}{\partial t}$，除最后的这个变化率外，前三个值都是使用时间为 0 （气室完全关闭时）开始的 10 个值进行线性回归，其与 y 轴的交点作为其初始值。在经过一点符合实际情况的假设和公式的变换，最终计算通量的方程为：</p>
+<p>$$F_c = \frac{10VP_0(1-\frac{W_0}{1000})}{RS(T_0 + 273.15)} \frac{\partial C_c^\prime}{\partial t}$$</p>
+<p>其中 $P_0$,$T_0$, $W_0$ 分别为线性回归所计算的初始值， V 为整个气室包含管路和泵的体积，S 是土壤环的面积，R 我们都知道其值为 8.314，我们剩下的要解决的问题就是看经过水汽校正的初始的干二氧化碳的变化率 $\frac{\partial C_c^\prime}{\partial t}$。</p>
+<p>要解决最后的难题，我们引入了另一个模型：</p>
+<p>$$C_c^ \prime (t) = C_x^ \prime + (C_0^ \prime - C_x^ \prime) e^ {-a(t-t0)}$$</p>
+<p>$C_c^ \prime (t)$ 是实时的干 $CO_2$ 的浓度值，$C_0^ \prime$ 是指叶室刚刚关闭时 $C_c^ \prime (t)$ 的值，即 t=0 时，这个值叶室利用最初的 10 个值进行线性拟合得到，a 为曲线形状的参数，$C_x^ \prime$ 则是定义了渐近线。因为 $C_x^ \prime$ 定义的是与渐近线相关的参数，根据我的经验，这很大程度上决定了计算的最终通量的结果，当然，差别也不大，和标准的 soilfluxpro 软件相比，指数拟合计算的通量总是大0.5以内的数据，具体原因我还没找到，我们先在这里插入一下渐近线的简单解释，方便和我一样，高中数学都还给老师的同学理解：</p>
+<p>渐近线是指当趋向于无穷大时，曲线接近的一条直线：</p>
+<img src="https://s2.ax1x.com/2020/02/08/1W5jJO.png" alt="asymptote" border="0">
+<p>从实际情况来讲，当我们的因为呼吸的累积 $CO_2$ 的浓度增加过高时，呼吸速率应该越来越小，也就是曲线应该表现出类似下面图形中这样的渐近线：</p>
+<img src="https://s2.ax1x.com/2020/02/08/1W5qdx.png" alt="hasymtote" border="0">
+<p>解释这么多的原因主要是想说明，这个渐近线相关的参数的数值不应该太小，我看了部分数据，多数在 700 以上。这对拟合非常重要。</p>
+<p>当 t=t0 时，意味着 $C_c^ \prime (t)$ = $C_0^ \prime$，气室关闭和 t0 的时间差以为着气室内气体混匀的时间。值的注意的是 t0 可能会为负值，这可能是 $CO_2$ 测量的偏差或者时间的延迟导致的。以上是关于拟合计算所需的模型的参数。</p>
+<p>有了以上的解释，我们看一下这个偏导数的变化率的计算：</p>
+<p>$$ \frac{\partial C_c^\prime}{\partial t} =a (C_x^ \prime - C_0^ \prime) e^ {-a(t-t0)}$$
+当 t=t0 时，我们计算最初的变化率：</p>
+<p>$$\frac{\partial C_c^\prime}{\partial t} \Big|_{t=t_0} = a(C_x^ \prime - C_0^ \prime)$$</p>
+<p>这就得到了最终我们所需要的参数，需要注意的是，上面的方程为经验模型 ，和最初的理论模型相比，其中的求解的参数没有理论上的解释，仅仅为求得最初的变化率而进行计算。当然有可能存在准确估计和不准确估计结果的可能。</p>
+<h1 id="li-8100-线性拟合参数的计算">LI-8100 线性拟合参数的计算</h1>
+<p>线性拟合与指数拟合的差别就是计算 $\frac{\partial C_c^\prime}{\partial t} \Big|_{t=t_0}$ 这个变化率的方式不同，线性拟合我们直接用线性回归来计算斜率，当然就是其变化率，没有太多可以解释的地方，计算通量的公式和非线性拟合相同。这里就不浪费时间解释了。</p>
+<h1 id="关于线性模型多项式拟合以及指数模型的比较">关于线性模型、多项式拟合以及指数模型的比较</h1>
+<p>不同的拟合方法归结起来主要有以下几点：</p>
+<ul>
+<li>线性模型通常是指对数据的线性变化部分进行拟合，但实际情况中，也仅仅是“看上去” 的线性变化。</li>
+<li>初始阶段，气室内处于空气混匀阶段，计算此时的斜率并无意义，混匀后，线性的程度取决于土壤面积与气室体积的比值和通量的速率。</li>
+<li>混匀后，$CO_2$ VS time 的曲线，通常呈现向下凹陷的趋势，这意味着，多数情况下，线性拟合会低估土壤碳通量。</li>
+<li>线性拟合是一种变异性或者灵活性非常低的方法，能够提供稳定的数据结果，可供我们做参考使用。</li>
+<li>多项式拟合能够很好的提供数据点和曲线的重合性，通常为二次方程，在实测数据测试中，轻微的 $CO_2$ 变化都会导致多项式性状的明显变化，这也是重合度高的代价，因此 LI-COR 不提供该方式的拟合。</li>
+</ul>
+<h1 id="模型的实现">模型的实现，</h1>
+<p>我们使用 LI-8150 的一次测量数据进行拟合，在正式开始前，我们看一下 soilfluxpro 显示的结果：</p>
+<img src="https://s2.ax1x.com/2020/02/08/1W5vWD.png" alt="fluxpro" border="0">
+<p>原始测量数据使用了 40 s 的 deadband，但从数据表现上来看，20 s 即为合适时间，所以我进行了 deadband 的修正。</p>
+<p>目前暂时使用 python 进行了测量，R 版本数据总是存在 0.1 ~ 0.3 之间的指数拟合结果的差异，我怀疑是拟合算法的问题，可能不影响，但等我彻底搞清楚了再测试：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># 导入需要的模块
+import numpy as np 
+import pandas as pd 
+from scipy import optimize, stats
+import matplotlib.pyplot as plt 
+import seaborn as sns
+
+# 导入数据
+df = pd.read_csv(r&#39;./data81/pystart.csv&#39;)
+
+# 计算 initial 值所需要的函数
+def init_cal(x, y):
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+    return intercept
+    
+# deadband 以后的数据
+xdata = df[&#34;Etime&#34;][20:]
+ydata = df[&#34;Cdry&#34;][20:]
+
+# 线性拟合所需要初始值
+c0=init_cal(df[&#34;Etime&#34;][0:10], df[&#34;Cdry&#34;][0:10])
+p0=init_cal(df[&#34;Etime&#34;][0:10], df[&#34;Pressure&#34;][0:10])
+w0=init_cal(df[&#34;Etime&#34;][0:10], df[&#34;H2O&#34;][0:10])
+t0=init_cal(df[&#34;Etime&#34;][0:10], df[&#34;Tcham&#34;][0:10])
+
+# 定义非线性模型的函数
+def dflux(x, cx, a, t0):
+    return cx + (c0 - cx) * np.exp((-a)*(x - t0))
+
+# 计算所需要的 a， cx 及 t0
+popt, pcov = optimize.curve_fit(dflux, xdata, ydata, bounds=([7000, 0.00001,  -2], [10000, 1,  8]))
+
+popt
+pcov
+</code></pre></div><p>计算结果如下，参数结果的顺序同定义的函数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">array([7.00000000e+03, 9.64712142e-05, 1.72103391e+00])
+
+array([[ 5.04095059e+08, -7.40990830e+00, -8.78480581e+03],
+       [-7.40990830e+00,  1.08921486e-07,  1.29176840e-04],
+       [-8.78480581e+03,  1.29176840e-04,  1.81433080e-01]])
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># 查看拟合结果的图形
+slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
+
+sns.set()
+plt.plot(xdata, dflux(xdata,*popt), &#34;g--&#34;)
+plt.scatter(xdata, ydata, c=&#34;blue&#34;, marker = &#34;o&#34;, s=8)
+</code></pre></div><img src="https://s2.ax1x.com/2020/02/08/1W5XFK.png" alt="expfit" border="0">
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">#计算8150的体积，以及最终指数拟合通量
+v=5404.16
+dcdt0 = popt[1] * (popt[0] - c0)
+dcdt0_lin= slope
+area = 317.8
+R = 8.314 
+numertator = 10*v*p0*(1-(w0/1000))
+denominator = R * area*(t0+273.15)
+exp_fc = numertator/denominator *dcdt0
+exp_fc
+</code></pre></div><p>指数拟合的结果：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">4.164371756189023
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># 线性拟合的计算
+lin_fc = numertator/denominator *dcdt0_lin
+lin_fc
+</code></pre></div><p>线性拟合通量的结果：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">4.143220574113859
+</code></pre></div><p>因为篇幅的原因，仅展示了拟合结果和作图，以及通量值，因为计算的原因，可以认为结果完全相同。</p>
+<h1 id="主要参考资料">主要参考资料</h1>
+<blockquote>
+<p>Healy, Richard W, Robert G Striegl, Thomas F Russell, G L Hutchinson, and G P Livingston. 1996. “Numerical Evaluation of Static-Chamber Measurements of Soil-Atmosphere Gas Exchange: Identification of Physical Processes.” Soil Science Society of America Journal 60 (3): 740–47.</p>
+</blockquote>
+<blockquote>
+<p>LI-COR Environment. 2012. LI-COR, Inc. <a href="https://www.licor.com/">https://www.licor.com/</a>.</p>
+</blockquote>
+</div>
+                    <div class="post_footer">
+                        
+                        <div class="meta">
+                            <div class="info">
+                                <span class="field tags">
+                                    <i class="ri-stack-line"></i>
+                                    
+                                    <a href="https://zhujiedong.github.io/tags/8100/">8100</a>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+                <div class="doc_comments"></div>
+                
+            </div>
+        </div>
+    </div>
+    <a id="back_to_top" href="#" class="back_to_top"><i class="ri-arrow-up-s-line"></i></a>
+    <footer class="footer">
+    <div class="powered_by">
+        <a href="https://varkai.com">Designed by VarKai,</a>
+        <a href="http://www.gohugo.io/">Proudly published with Hugo</a>
+    </div>
+
+    <div class="footer_slogan">
+        <span>网络小天地</span>
+    </div>
+</footer>
+    <script src="https://zhujiedong.github.io/js/jquery-3.5.1.min.js"></script>
+<link href="https://zhujiedong.github.io/css/fancybox.min.css" rel="stylesheet">
+<script src="https://zhujiedong.github.io/js/fancybox.min.js"></script>
+<script src="https://zhujiedong.github.io/js/zozo.js"></script>
+
+
+<script type="text/javascript" async
+    src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                TeX: {
+                    equationNumbers: { autoNumber: "AMS" },
+                    extensions: ["AMSmath.js", "AMSsymbols.js"]
+                }
+            }
+        });
+
+        MathJax.Hub.Queue(function () {
+            
+            
+            
+            var all = MathJax.Hub.getAllJax(), i;
+            for (i = 0; i < all.length; i += 1) {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+            }
+        });
+    </script>
+
+<style>
+    code.has-jax {
+        font: inherit;
+        font-size: 100%;
+        background: inherit;
+        border: inherit;
+        color: #515151;
+    }
+</style>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/blog/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/2020-11-10-%E4%BD%BF%E7%94%A8blogdown%E8%BF%81%E7%A7%BBhugo%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/categories/</loc>
+    <lastmod>2020-09-17T17:36:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/rm/</loc>
+    <lastmod>2020-09-17T17:36:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2020-09-17T17:36:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/%E7%9E%8E%E6%89%AF/</loc>
+    <lastmod>2020-09-17T17:36:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/garden/</loc>
+    <lastmod>2020-09-16T21:22:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/categories/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2020-09-16T21:22:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/8100/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/8100/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/post/2015-07-23-r-rmarkdown/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/plot/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/categories/r/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/r-markdown/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/tags/regression/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zhujiedong.github.io/about/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

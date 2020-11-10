@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>blog on 我的天地</title>
+    <link>https://zhujiedong.github.io/tags/blog/</link>
+    <description>Recent content in blog on 我的天地</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 10 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://zhujiedong.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用blogdown迁移hugo博客</title>
+      <link>https://zhujiedong.github.io/post/2020-11-10-%E4%BD%BF%E7%94%A8blogdown%E8%BF%81%E7%A7%BBhugo%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://zhujiedong.github.io/post/2020-11-10-%E4%BD%BF%E7%94%A8blogdown%E8%BF%81%E7%A7%BBhugo%E5%8D%9A%E5%AE%A2/</guid>
+      <description>对 blogdown 还是念念不忘，因此，今天将原来的博客重新使用 blogdown 创建了一下，下面的内容是记录过程摘要： 建站 library(blogdown) new_site(theme = &amp;#34;varkai/hugo-theme-zozo&amp;#34;) install_hugo(forece = TRUE) 将原来的hugo博客文件夹下的内容，覆盖新的 blogdown 之下的内容，当然是要覆盖，不保留新创建的内容，这</description>
+    </item>
+    
+  </channel>
+</rss>

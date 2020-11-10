@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>生活 on 我的天地</title>
+    <link>https://zhujiedong.github.io/categories/%E7%94%9F%E6%B4%BB/</link>
+    <description>Recent content in 生活 on 我的天地</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 16 Sep 2020 21:22:08 +0800</lastBuildDate><atom:link href="https://zhujiedong.github.io/categories/%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>开辟新的自留地</title>
+      <link>https://zhujiedong.github.io/post/garden/</link>
+      <pubDate>Wed, 16 Sep 2020 21:22:08 +0800</pubDate>
+      
+      <guid>https://zhujiedong.github.io/post/garden/</guid>
+      <description>实际上几年前开通过利用 blogdown 创建的博客，据说现在用 netlify 很不方便，加上 github 网速感人，索性迁移到 gitee 来，这是开篇之作。 其实看上去现在好像也无写博客的必要，但仔细想来也不然。这个社会现在充满了浮躁的气息，我们越来越没</description>
+    </item>
+    
+  </channel>
+</rss>
