@@ -43,16 +43,5 @@
       <description>本文是之前写的内容，从原网站导入，链接不贴也罢，因为墙的原因，基本放弃了 因为微信输入公式等诸多不便，因本文略有一点参考价值，所以将其转到我个人的博客上，微信的链接为： 浅谈 LI-8100 通量计算模型及实现 土壤呼吸是</description>
     </item>
     
-    <item>
-      <title>Hello R Markdown</title>
-      <link>https://zhujiedong.github.io/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>https://zhujiedong.github.io/post/2015-07-23-r-rmarkdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.:19.0 3rd Qu.: 56.00 ## Max. :25.0 Max. :120.00fit &amp;lt;- lm(dist ~ speed, data = cars)fit## ## Call:## lm(formula = dist ~ speed, data = cars)## ## Coefficients:## (Intercept) speed ## -17.</description>
-    </item>
-    
   </channel>
 </rss>
